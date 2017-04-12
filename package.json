@@ -1,0 +1,25 @@
+{
+  "title": "Frontend Skeleton template",
+  "name": "frontend-skeleton",
+  "version": "1.0.0",
+  "description": "Skeleton template for frontend web development",
+  "main": "index.js",
+  "repository": "https://github.com/codobred/frontend-skeleton",
+  "author": "codobred {{ codobred@gmail.com }}",
+  "dependencies": {
+    "autoprefixer": "^6.7.7",
+    "browser-sync": "^2.18.8",
+    "css-mqpacker": "^5.0.1",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-header": "^1.8.8",
+    "gulp-rename": "^1.2.2",
+    "gulp-rigger": "^0.5.8",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^2.1.2",
+    "postcss-font-magician": "^1.6.1",
+    "poststylus": "^0.2.3",
+    "rucksack-css": "^0.9.1"
+  }
+}
