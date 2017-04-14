@@ -26,7 +26,10 @@ var config = {
       watch: 'src/stylus/**/*.styl',
       endpoint: 'app.styl'
     },
-    html: 'src/html/*.html',
+    html: {
+      path: 'src/html/*.html',
+      watch: 'src/html/**/*.html',
+    },
     js: 'src/js/*.js'
   }
 };
@@ -44,15 +47,16 @@ gulp.task('stylus', function () {
     .pipe(stylus({
       use: [
         poststylus([
-    		require('postcss-font-magician')({ /* options */ }),
-        	autoprefixer('last 5 version', '> 1%', 'ie 9'),
-        	'rucksack-css',
-        	'css-mqpacker'
+        require('postcss-font-magician')({ /* options */ }),
+          autoprefixer('last 5 version', '> 1%', 'ie 9'),
+          'rucksack-css',
+          'css-mqpacker'
         ])
       ]
     }))
     .pipe(header(banner, { pkg: pkg }))
     .pipe(gulp.dest( config.dist.css.path ))
+    .pipe(browserSync.reload({stream: true}))
 });
 
 gulp.task('css:minify', ['stylus'], function () {
@@ -65,6 +69,7 @@ gulp.task('css:minify', ['stylus'], function () {
       .pipe(header(banner, { pkg: pkg }))
       .pipe(rename({ suffix: '.min' }))
       .pipe(gulp.dest( config.dist.css.path ))
+      .pipe(browserSync.reload({stream: true}))
 });
 
 // Copy JS to dist
@@ -72,6 +77,7 @@ gulp.task('js', function() {
     return gulp.src(config.src.js)
         .pipe(header(banner, { pkg: pkg }))
         .pipe(gulp.dest(config.dist.js))
+        .pipe(browserSync.reload({stream: true}))
 })
 
 // Minify JS
@@ -81,12 +87,14 @@ gulp.task('js:minify', ['js'], function() {
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(config.dist.js))
+        .pipe(browserSync.reload({stream: true}))
 });
 
 gulp.task('html:build', function () {
-    gulp.src( config.src.html )
+    gulp.src( config.src.html.path )
       .pipe(rigger())
       .pipe(gulp.dest( config.dist.html ))
+      .pipe(browserSync.reload({stream: true}))
 });
 
 // Configure the browserSync task
@@ -102,12 +110,10 @@ gulp.task('browserSync', function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(config.src.stylus.watch, ['css:minify'], browserSync.reload({
-    stream: true
-  }));
+  gulp.watch(config.src.stylus.watch, ['css:minify']);
 
-  gulp.watch(config.src.js, ['js:minify'], browserSync.reload);
-  gulp.watch(config.src.html, ['html:build'], browserSync.reload);
+  gulp.watch(config.src.js, ['js:minify']);
+  gulp.watch(config.src.html.watch, ['html:build']);
 });
 
 // only compile
